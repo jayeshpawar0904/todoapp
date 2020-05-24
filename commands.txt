@@ -21,3 +21,5 @@ npm install react-router-dom
 
 ---to install datepicker
 use npm install react-datepicker
+
+npm i @bit/feathericons.react-feather.file-plus

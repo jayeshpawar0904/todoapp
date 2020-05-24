@@ -6,59 +6,40 @@ import axios from 'axios';
 export default class editexerciseList extends Component{
     constructor(props){
         super(props);
-        this.onChangeUsername=this.onChangeUsername.bind(this);
+        this.onChangeTitle=this.onChangeTitle.bind(this);
         this.onChangeDescription=this.onChangeDescription.bind(this);
-        this.onChangeDuration=this.onChangeDuration.bind(this);
         this.onChangeDate=this.onChangeDate.bind(this);
         this.onSubmit=this.onSubmit.bind(this);
 
 
         this.state={
-            username : '',
+            title : '',
                 description :'',
-                duration:0,
                 date :new Date(),
                 users:[]
         }
     }
-    componentDidMount(){
+ componentDidMount(){
         axios.get('http://localhost:5000/exercises/'+this.props.match.params.id)
         .then(
             
             response=>
             {
             this.setState({
-                username:response.data.username,
+                title:response.data.title,
                 description:response.data.description,
-                duration:response.data.duration,
-                date:new Date(response.data.date)
+               date:new Date(response.data.date)
 
 
             })
         }).catch(function(error){
                 console.log(error);
             })
-      
-
-    
-
-
-
-     axios.get('http://localhost:5000/users/').then
-     (response =>{
-       if(response.data.length>0)
-       {
-          this.setState({
-            users:response.data.map(user=>user.username),
-
-        })
        }
-      })
-    }
 
-    onChangeUsername(e){
+    onChangeTitle(e){
         this.setState({
-            username:e.target.value
+            title:e.target.value
         });
     }
     
@@ -81,14 +62,13 @@ export default class editexerciseList extends Component{
     onSubmit(e){
       e.preventDefault();
 
-      const exercise ={
-          username:this.state.username,
+      const task ={
+        title:this.state.title,
           description:this.state.description,
-          duration:this.state.duration,
           date:this.state.date
       }
-      console.log(exercise);
-      axios.post('http://localhost:5000/exercises/update/'+this.props.match.params.id,exercise)
+      console.log(task);
+      axios.post('http://localhost:5000/exercises/update/'+this.props.match.params.id,task)
       .then(res=>console.log(res.data));
       
   }
@@ -97,24 +77,17 @@ export default class editexerciseList extends Component{
   render() {
     return (
     <div>
-      <h3> edit Exercise Log</h3>
+      <h3> Task Edit Panel</h3>
       <form onSubmit={this.onSubmit}>
+        
         <div className="form-group"> 
-          <label>Username: </label>
-          <select ref="userInput"
+          <label>Title: </label>
+          <input  type="text"
               required
               className="form-control"
-              value={this.state.username}
-              onChange={this.onChangeUsername}>
-              {
-                this.state.users.map(function(user) {
-                    return <option 
-                      key={user}
-                      value={user}>{user}
-                      </option>;
-                })
-              }
-          </select>
+              value={this.state.title}
+              onChange={this.onChangeTitle}
+              />
         </div>
         <div className="form-group"> 
           <label>Description: </label>
@@ -125,15 +98,7 @@ export default class editexerciseList extends Component{
               onChange={this.onChangeDescription}
               />
         </div>
-        <div className="form-group">
-          <label>Duration (in minutes): </label>
-          <input 
-              type="text" 
-              className="form-control"
-              value={this.state.duration}
-              onChange={this.onChangeDuration}
-              />
-        </div>
+       
         <div className="form-group">
           <label>Date: </label>
           <div>
@@ -145,7 +110,7 @@ export default class editexerciseList extends Component{
         </div>
 
         <div className="form-group">
-          <input type="submit" value="Edit Exercise Log" className="btn btn-primary" />
+          <input type="submit" value="Edit Task" className="btn btn-primary" />
         </div>
       </form>
     </div>

@@ -20,7 +20,7 @@ connection.once('open',()=>{
     console.log("Connection to mongodb is successfull");
 })
 
-const exercisesRouter = require('./routes/exercises');
+const exercisesRouter = require('./routes/tasks');
 const usersRouter = require('./routes/users');
 
 app.use('/exercises',exercisesRouter);
