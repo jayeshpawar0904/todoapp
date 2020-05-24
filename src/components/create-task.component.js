@@ -45,10 +45,7 @@ function renderCheckboxes() {
               </label>
           </div>
       );
-
- 
-console.log(checkboxes);
-      
+    
 
 }
 
@@ -66,7 +63,7 @@ export default class createtaskList extends Component{
         title : '',
             description :'',
             date :new Date(),
-            checkboxes:[],
+            checkboxes:[]
 
             
     }
@@ -74,7 +71,6 @@ export default class createtaskList extends Component{
 
 
  componentDidMount(){
-   const array=[];
  axios.get('http://localhost:5000/users/').then
  (response =>{
    if(response.data.length>0)
@@ -106,35 +102,31 @@ onChangeDate(date){
 }
 
 onSubmit(e){
-  e.preventDefault();
-
-  const task ={
-     title:this.state.title,
-      description:this.state.description,
-      date:this.state.date
-
-  }
  
-  console.log(task);
+   const  task ={
+        title:this.state.title,
+         description:this.state.description,
+         date:this.state.date,
+        checkboxes: this.state.checkboxes.filter(checkbox=> checkbox.checked). 
+          map(checkbox=>checkbox)
+       }
+   
+     console.log(task);
+
   axios.post('http://localhost:5000/exercises/add',task)
   .then(res=>console.log(res.data));
+ 
 
   this.state.checkboxes.map((person)=>{
-  
-   const labels={
+    const labels={
       label:person.label,
       checked:person.checked
     }
-      
-  axios.post('http://localhost:5000/users/add',labels)
-  .then(res=>console.log(res.data)); 
-  }
-  )
-
-
-
- 
-  window.location="/";
+    axios.post('http://localhost:5000/users/add',labels)
+    .then(res=>console.log(res.data)); 
+    
+  })
+  
   
 }
 

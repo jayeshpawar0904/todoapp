@@ -16,7 +16,7 @@ router.route('/add').post((req,res)=>
     const newUser = new User({label,checked});
     
     newUser.save()
-    .then(()=>res.json('user added!'))
+    .then(()=>res.json('labels added!'))
     .catch(err=>res.status(400).json('Error :'+err));
 });
 

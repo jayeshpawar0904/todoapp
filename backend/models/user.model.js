@@ -6,6 +6,7 @@ label :{
     type:String,
     required:true,
     trim:true,
+    unique:true
 },
 checked:{
     type:String,
