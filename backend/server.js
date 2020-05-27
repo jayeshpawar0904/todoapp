@@ -22,9 +22,13 @@ connection.once('open',()=>{
 
 const exercisesRouter = require('./routes/tasks');
 const usersRouter = require('./routes/users');
-
+const completedTaskRouter = require('./routes/ctasks');
+const newTaskRouter=require('./routes/ntasks');
 app.use('/exercises',exercisesRouter);
 app.use('/users',usersRouter);
+app.use('/ctasks',completedTaskRouter);
+app.use('/ntasks',newTaskRouter);
+
 
 app.listen(port,()=>{
     console.log(`Server is running on port:${port}`);

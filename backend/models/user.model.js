@@ -2,16 +2,13 @@ const mongoose =require('mongoose');
 const Schema=mongoose.Schema;
 
 const userSchema = new Schema({
-label :{
+username :{
     type:String,
     required:true,
     trim:true,
-    unique:true
+    unique:true,
+    minlength:3
 },
-checked:{
-    type:String,
-    required:true,
-}
 },
 {
     timestamps:true,

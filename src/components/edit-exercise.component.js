@@ -2,88 +2,156 @@ import React,{Component} from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
+import './tabs.css';
+import Tabs from './tabs.js';
 
-export default class editexerciseList extends Component{
-    constructor(props){
-        super(props);
-        this.onChangeTitle=this.onChangeTitle.bind(this);
-        this.onChangeDescription=this.onChangeDescription.bind(this);
-        this.onChangeDate=this.onChangeDate.bind(this);
-        this.onSubmit=this.onSubmit.bind(this);
+const styles={
+  fontFamily: 'sans-serif',
+};
 
+export class EditExercise extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+            title:'',
+            description:'',
+            date:new Date(),
+            label:'',
+            status:'',
+            users:[],
+            active:'aTab'
 
-        this.state={
-            title : '',
-                description :'',
-                date :new Date(),
-                users:[]
+             
         }
+    this.onChangeTitle = this.onChangeTitle.bind(this);
+    this.onChangeDescription = this.onChangeDescription.bind(this);
+    this.onChangeDate = this.onChangeDate.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onChangeLabel=this.onChangeLabel.bind(this);
+    this.changeStatus=this.changeStatus.bind(this);
     }
- componentDidMount(){
-        axios.get('http://localhost:5000/exercises/'+this.props.match.params.id)
-        .then(
+
+    componentDidMount() {
+      axios.get('http://localhost:5000/exercises/'+this.props.match.params.id)
+      .then(
+          
+          response=>
+          {
+            console.log(response.data.description);
+          this.setState({
+              title:response.data.title,
+              description:response.data.description,
             
-            response=>
-            {
-            this.setState({
-                title:response.data.title,
-                description:response.data.description,
-               date:new Date(response.data.date)
+            label:response.data.label,
+            status:response.data.status
 
 
-            })
-        }).catch(function(error){
-                console.log(error);
-            })
-       }
+          })
+      }).catch(function(error){
+              console.log(error);
+          })
 
+
+        axios.get('http://localhost:5000/users/')
+          .then(response => {
+            console.log(response);
+            if (response.data.length > 0) {
+              this.setState({
+                users: response.data.map(user => user.label),
+              })
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+    
+      }
+    changeStatus()
+    {
+      this.state.status=="new"?
+      this.setState({
+        status:"completed"
+      }):this.setState({
+        status:"new"
+      })
+    }
     onChangeTitle(e){
         this.setState({
             title:e.target.value
-        });
+        })
     }
-    
+    onChangeLabel(e){
+      this.setState({
+        label:e.target.value
+      })
+  }
     onChangeDescription(e){
         this.setState({
             description:e.target.value
-        });
+        })
     }
-    onChangeDuration(e){
-        this.setState({
-            duration:e.target.value
-        });
-    }
+
     onChangeDate(date){
         this.setState({
             date:date
-        });
+        })
     }
-  
-    onSubmit(e){
-      e.preventDefault();
 
-      const task ={
-        title:this.state.title,
-          description:this.state.description,
-          date:this.state.date
-      }
-      console.log(task);
-      axios.post('http://localhost:5000/exercises/update/'+this.props.match.params.id,task)
-      .then(res=>console.log(res.data));
-      
-  }
-  
-  
-  render() {
-    return (
-    <div>
-      <h3> Task Edit Panel</h3>
-      <form onSubmit={this.onSubmit}>
-        
+    onSubmit(e){
+        e.preventDefault();
+        const task={
+            title:this.state.title,
+            description:this.state.description,
+            date:this.state.date,
+            label:this.state.label,
+            status:this.state.status
+        }
+        console.log(task);
+
+        axios.post('http://localhost:5000/exercises/update/'+this.props.match.params.id,task)
+        .then(res=>console.log(res.data));
+        window.location='/boards';
+    }
+
+
+    render() {
+      const content = {
+        aTab: <span> <label className="alert alert-dark" role="alert">{this.state.label}</label>
         <div className="form-group"> 
+        <label>label: </label>
+        <select ref="userInput"
+            required
+            className="form-control"
+            value={this.state.label}
+            onChange={this.onChangeLabel}>
+            {
+              this.state.users.map(function(user) {
+                return <option 
+                  key={user}
+                  value={user}>{user}
+                  </option>;
+              })
+            }
+        </select>
+      </div>
+        
+      
+       </span> 
+        ,
+        bTab: <span><label id="k1" className="alert alert-dark" role="alert">{this.state.status}</label>
+     
+      <button type="button" onClick={this.changeStatus}>Change status</button>
+        </span> 
+      };
+        return (
+            <div>
+      <h3>Edit </h3>
+      <form onSubmit={this.onSubmit}>
+      <div className="form-group">
           <label>Title: </label>
-          <input  type="text"
-              required
+          <input 
+              type="text" 
               className="form-control"
               value={this.state.title}
               onChange={this.onChangeTitle}
@@ -98,7 +166,21 @@ export default class editexerciseList extends Component{
               onChange={this.onChangeDescription}
               />
         </div>
+
+
+        <div style={styles} id="k1">
+        <Tabs
+          active={this.state.active}
+          onChange={active => this.setState({active})}
+        >
+          <div key="aTab">Label</div>
+          <div key="bTab">Status</div>
+          </Tabs>
+        <p>{content[this.state.active]}
+        </p>
+      </div>
        
+        
         <div className="form-group">
           <label>Date: </label>
           <div>
@@ -114,6 +196,8 @@ export default class editexerciseList extends Component{
         </div>
       </form>
     </div>
-    )
-  }
+        )
+    }
 }
+
+export default EditExercise

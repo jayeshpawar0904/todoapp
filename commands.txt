@@ -23,3 +23,18 @@ npm install react-router-dom
 use npm install react-datepicker
 
 npm i @bit/feathericons.react-feather.file-plus
+
+
+
+
+
+
+
+
+
+
+
+resource used:
+https://github.com/brigand/react-scratch/blob/master/src/tabs/index.js
+to generate code of tab
+

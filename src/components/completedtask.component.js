@@ -7,8 +7,7 @@ import {Container , Row, Col } from 'reactstrap';
 
 
 
-
-export default class ExercisesList extends Component{
+export default class completedtask extends Component{
     constructor(props)
     {
         super(props);
@@ -21,7 +20,8 @@ export default class ExercisesList extends Component{
     
     componentDidMount()
     {
-        axios.get('http://localhost:5000/exercises/').then
+
+        axios.get('http://localhost:5000/ctasks/').then
         (response=>{
             this.setState({
                 exercises:response.data
@@ -67,4 +67,3 @@ export default class ExercisesList extends Component{
         
     }
 }
-

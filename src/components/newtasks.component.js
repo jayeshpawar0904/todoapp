@@ -7,7 +7,6 @@ import {Container , Row, Col } from 'reactstrap';
 
 
 
-
 export default class ExercisesList extends Component{
     constructor(props)
     {
@@ -21,14 +20,19 @@ export default class ExercisesList extends Component{
     
     componentDidMount()
     {
-        axios.get('http://localhost:5000/exercises/').then
-        (response=>{
+        axios.get('http://localhost:5000/ntasks/').then
+        (
+            
+            response=>{
             this.setState({
                 exercises:response.data
             })
         }).catch((error)=>{
             console.log(error);
         })
+        
+
+      
     }
 
     deleteExercise(id){
@@ -67,4 +71,3 @@ export default class ExercisesList extends Component{
         
     }
 }
-

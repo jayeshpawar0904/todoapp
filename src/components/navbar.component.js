@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link,Route} from 'react-router-dom';
-import Sidebar from 'react-sidebar'
 import CreateUser from "./create-user.component";
+import Boards from "./boards";
 
 
 export default class Navbar extends Component{
@@ -12,7 +12,7 @@ export default class Navbar extends Component{
           
             <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
               <Link to='/' className="navbar-brand">ToDoApp</Link>
-            
+
               
               
               <div className="collpase navbar-collapse">
@@ -22,6 +22,9 @@ export default class Navbar extends Component{
                 </li>
                 <li className="navbar-item">
                 <Link to="/create" className="nav-link"> Add task</Link>
+                </li>
+                <li className="navbar-item">
+                <Link to="/boards" className="nav-link"> Boards</Link>
                 </li>
               </ul>
               </div>

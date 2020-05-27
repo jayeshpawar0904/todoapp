@@ -8,25 +8,80 @@ import EditExercise from "./components/edit-exercise.component";
 import CreateTask from "./components/create-task.component";
 import CreateUser from "./components/create-user.component";
 import Sidebar from './components/Sidebar';
+import Boards from './components/boards';
+import HomeIcon from "@material-ui/icons/Home";
+import ReceiptIcon from "@material-ui/icons/Receipt";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
+import SettingsIcon from "@material-ui/icons/Settings";
+import './App.css';
 
-const items =[
-  {name:'home', label:'home'},
-  {name:'billing', label:'Billing'},
-  {name:'settings', label:'Setting'},
-  
-]
+function onClick(e, item) {
+  window.alert(JSON.stringify(item, null, 2));
+}
+
+const items = [
+  { name: "home", label: "Home", Icon: HomeIcon },
+  {
+    name: "billing",
+    label: "Billing",
+    Icon: ReceiptIcon,
+    items: [
+      { name: "statements", label: "Statements", onClick },
+      { name: "reports", label: "Reports", onClick }
+    ]
+  },
+  "divider",
+  {
+    name: "settings",
+    label: "Settings",
+    Icon: SettingsIcon,
+    items: [
+      { name: "profile", label: "Profile" },
+      { name: "insurance", label: "Insurance", onClick },
+      "divider",
+      {
+        name: "notifications",
+        label: "Notifications",
+        Icon: NotificationsIcon,
+        items: [
+          { name: "email", label: "Email", onClick },
+          {
+            name: "desktop",
+            label: "Desktop",
+            Icon: DesktopWindowsIcon,
+            items: [
+              { name: "schedule", label: "Schedule" },
+              { name: "frequency", label: "Frequency" }
+            ]
+          },
+          { name: "sms", label: "SMS" }
+        ]
+      }
+    ]
+  }
+];
+
 function App() {
   return (
     <Router>
     <div >
-    <Navbar/>
+    <div className="sidenav ">
+    <Sidebar items={items}/>
 
+    </div>
+    <div className="main">
+    <Navbar/>
+   
     <br/>
    <div className="container">
 <Route path ="/" exact component ={ExercisesList}/>
 <Route path ="/edit/:id" component={EditExercise}/>
 <Route path ="/create"  component={CreateTask}/>
 <Route path ="/user" component={CreateUser}/>
+<Route path ="/boards" component={Boards}/>
+
+</div>
 </div>
 </div>
  </Router>
